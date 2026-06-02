@@ -83,8 +83,6 @@ export default function TransactionsPage() {
       setSelectedFile(null);
       setSelectedTransaction(null);
       setShowSuccess(true);
-
-
     } catch (error: any) {
       console.log("ERROR RESPONSE:", error.response?.data);
 
@@ -157,25 +155,54 @@ export default function TransactionsPage() {
             </div>
 
             {/* PROOF */}
-            {trx.paymentProof ? (
-              <div className="mt-6 bg-green-50 rounded-2xl p-4">
-                <p className="text-green-700 font-medium">
-                  Bukti pembayaran telah diupload
-                </p>
-              </div>
-            ) : (
-              <div className="mt-6">
-                {(trx.paymentStatus === "UNPAID" ||
-                  trx.paymentStatus === "REJECTED") && (
+            <div className="mt-6">
+              {trx.paymentStatus === "REJECTED" ? (
+                <div className="space-y-3">
+                  <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
+                    <p className="font-semibold text-red-700">
+                      Pembayaran Ditolak
+                    </p>
+
+                    <p className="text-sm text-red-600 mt-1">
+                      Silakan upload ulang bukti pembayaran yang benar.
+                    </p>
+                  </div>
+
                   <button
-                    onClick={() => setSelectedTransaction(trx)}
-                    className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-3 rounded-xl"
+                    onClick={() => {
+                      setSelectedTransaction(trx);
+                      setSelectedFile(null);
+                    }}
+                    className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-3 rounded-xl font-semibold"
                   >
-                    Upload Bukti Pembayaran
+                    Upload Ulang Bukti Pembayaran
                   </button>
-                )}
-              </div>
-            )}
+                </div>
+              ) : trx.paymentStatus === "PENDING" ? (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4">
+                  <p className="font-semibold text-yellow-700">
+                    Menunggu Verifikasi Admin
+                  </p>
+                </div>
+              ) : trx.paymentStatus === "APPROVED" ||
+                trx.paymentStatus === "PAID" ? (
+                <div className="bg-green-50 border border-green-200 rounded-2xl p-4">
+                  <p className="font-semibold text-green-700">
+                    Pembayaran Berhasil Diverifikasi
+                  </p>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setSelectedTransaction(trx);
+                    setSelectedFile(null);
+                  }}
+                  className="w-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white py-3 rounded-xl font-semibold"
+                >
+                  Upload Bukti Pembayaran
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>
