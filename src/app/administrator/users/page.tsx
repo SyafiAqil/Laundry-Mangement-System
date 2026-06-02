@@ -223,7 +223,7 @@ export default function UsersPage() {
 
                   <p className="text-slate-400 text-sm mt-1">{user.phone}</p>
 
-                  <p className="text-slate-400 text-sm mt-1">{user.phone}</p>
+               
                 </div>
               </div>
 
